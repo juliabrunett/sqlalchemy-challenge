@@ -30,7 +30,7 @@ def home():
         "/api/v1.0/stations<br/>"
         "/api/v1.0/tobs<br/>"
         "/api/v1.0/<start><br/>"
-        "/api/v1.0/<start>/<end><br/>"
+        "/api/v1.0/<start>/<end><br/>" )
 
 # Create a flask route for returning json
 @app.route("/api/v1.0/precipitation")
@@ -47,9 +47,14 @@ def precipitation():
         filter(Measurement.date <= '2017-08-23').\
         filter(Measurement.date >= '2016-08-23').\
         order_by(Measurement.date).group_by(Measurement.date).all()
+
+    # Close the session
     session.close()
 
+    # Create a precipitation list
     precip = []
+
+    # Loop through and create a dictionary and then append to the list
     for date, precipitation in twelve_months:
         prcp_dict = {}
         prcp_dict["date"] = date
@@ -60,8 +65,35 @@ def precipitation():
 
 @app.route("/api/v1.0/stations")
 def stations():
-    {stations}
-    return jsonify()
+    # Begin a session   
+    session = Session(engine)
+
+    # Query to find the most active stations 
+    sel = [Station.id,
+        Station.station,
+        Station.name,
+        func.count(Measurement.id)]
+
+    # Create query that filters by the join between the tables
+    stations_by_activity = session.query(*sel).filter(Station.station == Measurement.station).\
+        group_by(Station.id).order_by(func.count(Measurement.id).desc()).all()
+
+    # Close the session
+    session.close()
+
+    # Create a list for station actvity
+    station_activity = []
+
+    # Loop through and create a dictionary and then append to the list
+    for id, station, name, measurement_id_count in stations_by_activity:
+        activity_dict = {}
+        activity_dict["id"] = id
+        activity_dict["station"] = station
+        activity_dict["name"] = name
+        activity_dict["measurement_id_count"] = measurement_id_count
+        station_activity.append(activity_dict)
+
+    return jsonify(station_activity)
 
 @app.route("/api/v1.0/tobs")
 def tobs():
@@ -78,6 +110,6 @@ def start_end():
 
 # Debug app
 if __name__ == "__main__":
-    app.run(depug=True)
+    app.run(debug=True)
     
     
