@@ -17,9 +17,6 @@ Base.prepare(engine, reflect=True)
 Station = Base.classes.station
 Measurement = Base.classes.measurement
 
-# Begin a session
-session = Session(engine)
-
 # Setup the flask app
 app = Flask(__name__)
 
@@ -38,8 +35,28 @@ def home():
 # Create a flask route for returning json
 @app.route("/api/v1.0/precipitation")
 def precipitation():
-    {date: prcp}
-    return jsonify()
+    # Begin a session
+    session = Session(engine)
+
+    # define selections
+    sel = [Measurement.date,
+       func.sum(Measurement.prcp)]
+
+    # Retrieve the last 12 months of precipitation data
+    twelve_months = session.query(*sel).\
+        filter(Measurement.date <= '2017-08-23').\
+        filter(Measurement.date >= '2016-08-23').\
+        order_by(Measurement.date).group_by(Measurement.date).all()
+    session.close()
+
+    precip = []
+    for date, precipitation in twelve_months:
+        prcp_dict = {}
+        prcp_dict["date"] = date
+        prcp_dict["precipitation"] = precipitation
+        precip.append(prcp_dict)
+
+    return jsonify(precip)
 
 @app.route("/api/v1.0/stations")
 def stations():
