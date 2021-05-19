@@ -1,9 +1,8 @@
 # Import flask dependencies
 from flask import Flask, jsonify
 
-# Import sqlalchemy dependencies
+# Import sqlalchemy & other dependencies
 import numpy as np
-import scipy.stats as sts
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
@@ -25,13 +24,18 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     return (
-        "Welcome to my Home Page!<br/>"
-        "Available Routes:<br/>"
-        "/api/v1.0/precipitation<br/>"
-        "/api/v1.0/stations<br/>"
-        "/api/v1.0/tobs<br/>"
-        "/api/v1.0/2015-01-01<br/>"
-        "/api/v1.0/2015-01-01/2016-01-01br/>" )
+        "<strong><head>Welcome to the Climate App!</head></strong><br/><br/>"
+        "<em><strong>Available Routes:</em></strong><br/>"
+        "<p><em>Find precipitation data: </em><br/>"
+        "/api/v1.0/precipitation</p>"
+        "<p><em>Find station data: </em><br/>"
+        "/api/v1.0/stations</p>"
+        "<p><em>Find temperature data: </em><br/>"
+        "/api/v1.0/tobs</p>"
+        "<p><em>Enter your own Start Date: </em><br/>"
+        "/api/v1.0/2015-01-01</p>"
+         "<p><em>Enter your own Start Date and End Date: </em><br/>"
+        "/api/v1.0/2015-01-01/2016-01-01</p>" )
 
 # Converts the query results from jupyter notebook exploration to a dictionary
 # Returns the JSON representation of the dictionary
@@ -139,12 +143,6 @@ def start(start):
      # Begin a session   
     session = Session(engine)
 
-    # Query to find dates after start
-    #dates_after_start = session.query(Measurement.date).filter(Measurement.date >= start).order_by(Measurement.date).all()
-
-    # Find the end date
-    #end_date = max(dates_after_start)
-
     # Retrieve the min, max, and average from a start date
     # What we will be selecting
     sel = [func.min(Measurement.tobs),
@@ -173,12 +171,6 @@ def start_end(start, end):
 
      # Begin a session   
     session = Session(engine)
-
-    # Query to find dates after start
-    #dates_after_start = session.query(Measurement.date).filter(Measurement.date >= start).order_by(Measurement.date).all()
-
-    # Find the end date
-    #end_date = max(dates_after_start)
 
     # Retrieve the min, max, and average from a start date
     # What we will be selecting
