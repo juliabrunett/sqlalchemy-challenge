@@ -25,16 +25,22 @@ app = Flask(__name__)
 def home():
     return (
         "<strong><head>Welcome to the Climate App!</head></strong><br/><br/>"
+
         "<em><strong>Available Routes:</em></strong><br/>"
-        "<p><em>Find precipitation data: </em><br/>"
+
+        "<p><em>Find precipitation data for the last year: </em><br/>"
         "/api/v1.0/precipitation</p>"
+
         "<p><em>Find station data: </em><br/>"
         "/api/v1.0/stations</p>"
-        "<p><em>Find temperature data: </em><br/>"
+
+        "<p><em>Find temperature data for the last year at the most active station: </em><br/>"
         "/api/v1.0/tobs</p>"
-        "<p><em>Enter your own Start Date: </em><br/>"
+
+        "<p><em>Enter your own Start Date to see temperature statistics: </em><br/>"
         "/api/v1.0/2015-01-01</p>"
-         "<p><em>Enter your own Start Date and End Date: </em><br/>"
+
+         "<p><em>Enter your own Start Date and End Date to see temperature statistics: </em><br/>"
         "/api/v1.0/2015-01-01/2016-01-01</p>" )
 
 # Converts the query results from jupyter notebook exploration to a dictionary
@@ -63,8 +69,7 @@ def precipitation():
     # Loop through and create a dictionary and then append to the list
     for date, precipitation in twelve_months:
         prcp_dict = {}
-        prcp_dict["date"] = date
-        prcp_dict["precipitation"] = precipitation
+        prcp_dict[date] = precipitation
         precip.append(prcp_dict)
 
     return jsonify(precip)
@@ -78,12 +83,10 @@ def stations():
     # Query to find the most active stations 
     sel = [Station.id,
         Station.station,
-        Station.name,
-        func.count(Measurement.id)]
+        Station.name]
 
     # Create query that filters by the join between the tables
-    stations_by_activity = session.query(*sel).filter(Station.station == Measurement.station).\
-        group_by(Station.id).order_by(func.count(Measurement.id).desc()).all()
+    stations_by_activity = session.query(*sel).filter(Station.station == Measurement.station).group_by(Station.id).order_by(Station.id).all()
 
     # Close the session
     session.close()
@@ -92,12 +95,11 @@ def stations():
     station_activity = []
 
     # Loop through and create a dictionary and then append to the list
-    for id, station, name, measurement_id_count in stations_by_activity:
+    for id, station, name in stations_by_activity:
         activity_dict = {}
         activity_dict["id"] = id
         activity_dict["station"] = station
         activity_dict["name"] = name
-        activity_dict["measurement_id_count"] = measurement_id_count
         station_activity.append(activity_dict)
 
     return jsonify(station_activity)
@@ -116,8 +118,8 @@ def tobs():
 
     # Query the last year of data for the most active station
     twelve_months_active = session.query(*sel).\
-        filter(Measurement.date <= '2017-08-23').\
-        filter(Measurement.date >= '2016-08-23').\
+        filter(Measurement.date <= '2017-08-18').\
+        filter(Measurement.date >= '2016-08-18').\
         filter(Measurement.station == "USC00519281").\
         order_by(Measurement.date).all()
 
@@ -152,7 +154,10 @@ def start(start):
     # Query
     temperature_stats = session.query(*sel).filter(Measurement.date >= start)
 
-     #Create a list for the dictionary
+    # Close the session
+    session.close()
+
+    # Create a list for the dictionary
     temp_stats = []
 
     # Loop through and create a dictionary and then append to the list
@@ -180,6 +185,9 @@ def start_end(start, end):
 
     # Query
     temperature_stats = session.query(*sel).filter(Measurement.date >= start).filter(Measurement.date <= end)
+
+    # Close the session
+    session.close()
 
      #Create a list for the dictionary
     temp_stats = []
