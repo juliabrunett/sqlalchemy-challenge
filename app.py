@@ -30,8 +30,8 @@ def home():
         "/api/v1.0/precipitation<br/>"
         "/api/v1.0/stations<br/>"
         "/api/v1.0/tobs<br/>"
-        "/api/v1.0/<start><br/>"
-        "/api/v1.0/<start>/<end><br/>" )
+        "/api/v1.0/2015-01-01<br/>"
+        "/api/v1.0/2015-01-01/2016-01-01br/>" )
 
 # Converts the query results from jupyter notebook exploration to a dictionary
 # Returns the JSON representation of the dictionary
@@ -134,16 +134,16 @@ def tobs():
 
 # Returns a JSON list of the minimum, average, and max temperature for a given start date
 @app.route("/api/v1.0/<start>")
-def start(start_date):
+def start(start):
 
      # Begin a session   
     session = Session(engine)
 
-    dates_after_start = session.query(Measurement.date).filter(Measurment.date >= start_date)./
-        order_by(Measurement.date).all()
+    # Query to find dates after start
+    #dates_after_start = session.query(Measurement.date).filter(Measurement.date >= start).order_by(Measurement.date).all()
 
     # Find the end date
-    end_date = max(dates_after_start)
+    #end_date = max(dates_after_start)
 
     # Retrieve the min, max, and average from a start date
     # What we will be selecting
@@ -152,8 +152,7 @@ def start(start_date):
         func.avg(Measurement.tobs)]
 
     # Query
-    temperature_stats = session.query(*sel).\
-        filter(Measurment.date >= start_date)
+    temperature_stats = session.query(*sel).filter(Measurement.date >= start)
 
      #Create a list for the dictionary
     temp_stats = []
@@ -170,8 +169,39 @@ def start(start_date):
 
 # Returns a JSON list of the minimum, average, and max temperature for a given start and end date
 @app.route("/api/v1.0/<start>/<end>")
-def start_end():
-    return jsonify()
+def start_end(start, end):
+
+     # Begin a session   
+    session = Session(engine)
+
+    # Query to find dates after start
+    #dates_after_start = session.query(Measurement.date).filter(Measurement.date >= start).order_by(Measurement.date).all()
+
+    # Find the end date
+    #end_date = max(dates_after_start)
+
+    # Retrieve the min, max, and average from a start date
+    # What we will be selecting
+    sel = [func.min(Measurement.tobs),
+        func.max(Measurement.tobs),
+        func.avg(Measurement.tobs)]
+
+    # Query
+    temperature_stats = session.query(*sel).filter(Measurement.date >= start).filter(Measurement.date <= end)
+
+     #Create a list for the dictionary
+    temp_stats = []
+
+    # Loop through and create a dictionary and then append to the list
+    for min_temp, max_temp, avg_temp in temperature_stats:
+        stats = {}
+        stats["min_temp"] = min_temp
+        stats["max_temp"] = max_temp
+        stats["avg_temp"] = avg_temp
+        temp_stats.append(stats)
+
+
+    return jsonify(temp_stats)
 
 # Debug app
 if __name__ == "__main__":
