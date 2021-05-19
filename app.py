@@ -24,24 +24,30 @@ app = Flask(__name__)
 @app.route("/")
 def home():
     return (
-        "<strong><head>Welcome to the Climate App!</head></strong><br/><br/>"
+        "<title>Climate App</title>"
 
-        "<em><strong>Available Routes:</em></strong><br/>"
+        "<strong> <head>Welcome to the Climate App!</head> </strong> <br/> <br/>"
 
-        "<p><em>Find precipitation data for the last year: </em><br/>"
-        "/api/v1.0/precipitation</p>"
+        "<em> <strong>Available Routes:</em> </strong> <br/>"
 
-        "<p><em>Find station data: </em><br/>"
-        "/api/v1.0/stations</p>"
+        "<ul> <li> <em>Find <strong> precipitation </strong> data for the last year: </em> <br/> </li>"
+        "/api/v1.0/precipitation <hr/>"
 
-        "<p><em>Find temperature data for the last year at the most active station: </em><br/>"
-        "/api/v1.0/tobs</p>"
+        "<li> <em>Find <strong> station </strong> data: </em> <br/> </li>"
+        "/api/v1.0/stations <hr/>"
 
-        "<p><em>Enter your own Start Date to see temperature statistics: </em><br/>"
-        "/api/v1.0/2015-01-01</p>"
+        "<li> <em>Find <strong> temperature </strong> data for the last year at the most active station: </em> <br/> </li>"
+        "/api/v1.0/tobs <hr/>"
 
-         "<p><em>Enter your own Start Date and End Date to see temperature statistics: </em><br/>"
-        "/api/v1.0/2015-01-01/2016-01-01</p>" )
+        
+        "<li> <em>Enter your own <strong> Start Date </strong> to see temperature statistics: </em> <br/> </li>"
+        "/api/v1.0/2015-01-01 <hr/>"
+
+        "<li> <em>Enter your own <strong> Start Date </strong> and <strong> End Date </strong> to see temperature statistics: </em> <br/> </li>"
+        "/api/v1.0/2015-01-01/2016-01-01 <hr/> </ul>" 
+
+        "<p> <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date Range: 2010-01-01 to 2017-08-23</strong> </p>")
+
 
 # Converts the query results from jupyter notebook exploration to a dictionary
 # Returns the JSON representation of the dictionary
