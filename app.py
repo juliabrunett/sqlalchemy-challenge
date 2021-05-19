@@ -3,6 +3,7 @@ from flask import Flask, jsonify
 
 # Import sqlalchemy dependencies
 import numpy as np
+import scipy.stats as sts
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
@@ -32,7 +33,8 @@ def home():
         "/api/v1.0/<start><br/>"
         "/api/v1.0/<start>/<end><br/>" )
 
-# Create a flask route for returning json
+# Converts the query results from jupyter notebook exploration to a dictionary
+# Returns the JSON representation of the dictionary
 @app.route("/api/v1.0/precipitation")
 def precipitation():
     # Begin a session
@@ -63,6 +65,7 @@ def precipitation():
 
     return jsonify(precip)
 
+# Returns a JSON list of stations from the dataset
 @app.route("/api/v1.0/stations")
 def stations():
     # Begin a session   
@@ -95,15 +98,77 @@ def stations():
 
     return jsonify(station_activity)
 
+# Query the dates and temperature observations of the most active station
+# Last year of data
 @app.route("/api/v1.0/tobs")
 def tobs():
-    return jsonify()
 
+     # Begin a session   
+    session = Session(engine)
+
+    # Retrieve the last 12 months of data for most active station
+    sel = [Measurement.tobs,
+        Measurement.date]
+
+    # Query the last year of data for the most active station
+    twelve_months_active = session.query(*sel).\
+        filter(Measurement.date <= '2017-08-23').\
+        filter(Measurement.date >= '2016-08-23').\
+        filter(Measurement.station == "USC00519281").\
+        order_by(Measurement.date).all()
+
+    # Close the session
+    session.close()
+
+    #Create a list for the dictionary
+    most_active_station = []
+
+    # Loop through and create a dictionary and then append to the list
+    for tobs, date in twelve_months_active:
+        last_year_data = {}
+        last_year_data["tobs"] = tobs
+        last_year_data["date"] = date
+        most_active_station.append(last_year_data)
+
+    return jsonify(most_active_station)
+
+# Returns a JSON list of the minimum, average, and max temperature for a given start date
 @app.route("/api/v1.0/<start>")
-def start():
+def start(start_date):
 
-    return jsonify()
+     # Begin a session   
+    session = Session(engine)
 
+    dates_after_start = session.query(Measurement.date).filter(Measurment.date >= start_date)./
+        order_by(Measurement.date).all()
+
+    # Find the end date
+    end_date = max(dates_after_start)
+
+    # Retrieve the min, max, and average from a start date
+    # What we will be selecting
+    sel = [func.min(Measurement.tobs),
+        func.max(Measurement.tobs),
+        func.avg(Measurement.tobs)]
+
+    # Query
+    temperature_stats = session.query(*sel).\
+        filter(Measurment.date >= start_date)
+
+     #Create a list for the dictionary
+    temp_stats = []
+
+    # Loop through and create a dictionary and then append to the list
+    for min_temp, max_temp, avg_temp in temperature_stats:
+        stats = {}
+        stats["min_temp"] = min_temp
+        stats["max_temp"] = max_temp
+        stats["avg_temp"] = avg_temp
+        temp_stats.append(stats)
+
+    return jsonify(temp_stats)
+
+# Returns a JSON list of the minimum, average, and max temperature for a given start and end date
 @app.route("/api/v1.0/<start>/<end>")
 def start_end():
     return jsonify()
