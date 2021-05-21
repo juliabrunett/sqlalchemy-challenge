@@ -6,6 +6,9 @@
 - hawaii_measurements.csv
 - hawaii_stations.csv
 
+***Images Folder:***
+- PNG images of the graphs generated for the analysis
+
 **climate_analysis.ipynb:**
 - This file contains the initial climate analysis and exploration of the SQLite database provided and shows graphs that were generated to better understand trends in the data. The database was queried using SQLAlchemy ORM queries, Pandas, and Matplotlib.
 - This file also contains an analysis and exploration of the weather stations in Hawaii, discovering which station is the most active with the highest number of observations over time.
