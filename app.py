@@ -46,7 +46,7 @@ def home():
         "<li> <em>Enter your own <strong> Start Date </strong> and <strong> End Date </strong> to see temperature statistics: </em> <br/> </li>"
         "/api/v1.0/2015-01-01/2016-01-01 <hr/> </ul>" 
 
-        "<p> <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date Range: 2010-01-01 to 2017-08-23</strong> </p>")
+        "<p> <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Available Date Range: 2010-01-01 to 2017-08-23</strong> </p>")
 
 
 # Converts the query results from jupyter notebook exploration to a dictionary
@@ -86,10 +86,13 @@ def stations():
     # Begin a session   
     session = Session(engine)
 
-    # Query to find the most active stations 
+    # Query to find the station details
     sel = [Station.id,
         Station.station,
-        Station.name]
+        Station.name,
+        Station.latitude,
+        Station.longitude,
+        Station.elevation]
 
     # Create query that filters by the join between the tables
     stations_by_activity = session.query(*sel).filter(Station.station == Measurement.station).group_by(Station.id).order_by(Station.id).all()
@@ -101,11 +104,14 @@ def stations():
     station_activity = []
 
     # Loop through and create a dictionary and then append to the list
-    for id, station, name in stations_by_activity:
+    for id, station, name, latitude, longitude, elevation in stations_by_activity:
         activity_dict = {}
         activity_dict["id"] = id
         activity_dict["station"] = station
         activity_dict["name"] = name
+        activity_dict["latitude"] = latitude
+        activity_dict["longitude"] = longitude
+        activity_dict["elevation"] = elevation
         station_activity.append(activity_dict)
 
     return jsonify(station_activity)
