@@ -12,14 +12,14 @@ start_date_button_1.on("click", runEnterStart);
 end_date_button.on("click", runEnterStartEnd);
 // form.on("submit", runEnter);
 
-var input = new Date("2014-01-01");
-var date = input.getTime();
-var year = input.getUTCFullYear();
-var day = input.getUTCDate();
-var month = input.getUTCMonth() + 1;
-console.log(year);
-console.log(day);
-console.log(month);
+// var input = new Date("2014-01-01");
+// var date = input.getTime();
+// var year = input.getUTCFullYear();
+// var day = input.getUTCDate();
+// var month = input.getUTCMonth() + 1;
+// console.log(year);
+// console.log(day);
+// console.log(month);
 
 function runEnterStart() {
     // Keep the page from refreshing
@@ -67,6 +67,7 @@ function runEnterStartEnd() {
 
     var end_date_validation = validateDate(inputEndDate);
     var start_date_validation = validateDate(inputStartDate);
+
     console.log("End Date Valid: ", end_date_validation);
     console.log("Start Date Valid: ", start_date_validation);
 
@@ -101,8 +102,11 @@ function runEnterStartEnd() {
             // runSearch(full_date_url);
         };
     }
-    else if (end_date_validation === false || start_date_validation === false) {
+    else if (end_date_validation === false) {
         d3.select("#end-date-selection").html(`<br>Enter a Valid Date`);
+    }
+    else if (start_date_validation === false) {
+        d3.select("#start-date-selection-2").html(`<br>Enter a Valid Date`);
     };
 };
 
@@ -127,63 +131,60 @@ function runSearch(date_url) {
 
 function validateDate(inputDate) {
     
+    // Initialize validation variable
     var date_validation = false;
-    var end_year = inputDate.getUTCFullYear();
-    var end_day = inputDate.getUTCDate();
-    var end_month = inputDate.getUTCMonth() + 1;
 
-    if (end_year > 2017 || end_year < 2010) {
+    var year = inputDate.getUTCFullYear();
+    var day = inputDate.getUTCDate();
+    var month = inputDate.getUTCMonth() + 1;
+
+    if (year > 2017 || year < 2010) {
         date_validation = false;
     }
-    else if (end_year === 2017){
-        if (end_month > 8) {
+    else if (year === 2017){
+        if (month > 8) {
             date_validation = false;
         }
-        else if (end_month < 8 && end_month >= 1) {
-
-            if (end_day > 23 && end_month === 8) {
+        else if (month < 8 && month >= 1) {
+            if (day > 23 && month === 8) {
                 date_validation = false;
-            }
+            };
         };
-
-        
-        
     }
     else {
-    
-        if (end_month > 12 || end_month < 1) {
+        if (month > 12 || month < 1) {
             date_validation = false;
         }
-        else if (end_month === 1 || end_month === 3 || end_month === 5 || end_month === 7 || end_month === 8 || end_month === 10 || end_month === 12 ) {
-            if (end_day > 31 || end_day < 1) {
+        else if (month === 1 || month === 3 || month === 5 || month === 7 || month === 8 || month === 10 || month === 12 ) {
+            if (day > 31 || day < 1) {
                 date_validation = false;
             }
-            else if (end_day <= 31 && end_day >= 1) {
+            else if (day <= 31 && day >= 1) {
                 date_validation = true;
             };
         }
-        else if (end_month === 4 || end_month === 6 || end_month === 9 || end_month === 11){
-            if (end_day > 30 || end_day < 1) {
+        else if (month === 4 || month === 6 || month === 9 || month === 11) {
+            if (day > 30 || day < 1) {
                 date_validation = false;
             }
-            else if (end_day <= 30 && end_day >= 1)  {
+            else if (day <= 30 && day >= 1)  {
                 date_validation = true;
             };
         }
-        else if (end_month === 2) {
-            if ((end_year % 100 !== 0 && end_year % 4 === 0) || end_year % 400 === 0) {
-                if (end_day > 29 || end_day < 1) {
+        else if (month === 2) {
+            if ((year % 100 !== 0 && year % 4 === 0) || year % 400 === 0) {
+                if (day > 29 || day < 1) {
                     date_validation = false;
                 } 
-                else if (end_day <= 29 && end_day >= 1) {
+                else if (day <= 29 && day >= 1) {
                     date_validation = true;
                 };
             }
             else {
-                if (end_day > 28 || end_day < 1) {
+                if (day > 28 || day < 1) {
                     date_validation = false;
                 } 
-                else if (end_day <= 28 && end_day >= 1) {
+                else if (day <= 28 && day >= 1) {
                     date_validation = true;
                 };
             };
