@@ -75,4 +75,16 @@ body {
     background-color: lightslategray;
 }
 
+#search-button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: white;
+    background-color: lightslategray;
+}
 
+#search-button:hover {
+    background-color: lightgray;
+    border-color: black;
+    color: black;
+    border-width: 1px;
+}
