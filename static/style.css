@@ -1,0 +1,78 @@
+body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+#top-row-box {
+    background-color: pink;
+    padding: 20px;
+    margin-top: 30px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+
+}
+
+#bottom-row-box {
+    background-color: aliceblue;
+    padding: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+}
+
+/* #bottom-row-box:hover {
+    background-color: blue;
+} */
+
+#top-row-box:hover {
+    background-color: mediumorchid;
+}
+
+#bottom-row-box p {
+    font-size: 20px;
+}
+#top-row-box p {
+    font-size: 20px;
+}
+
+
+.topRow {
+    display: flex;
+    justify-content: center;
+}
+
+.bottomRow {
+    display: flex;
+    justify-content: center;
+}
+
+#end-filter-button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: white;
+    background-color: lightslategray;
+}
+
+#end-filter-button:hover {
+    background-color: lightgray;
+    border-color: black;
+    color: black;
+    border-width: 1px;
+}
+
+#start-filter-button:hover {
+    background-color: lightgray;
+    border-color: black;
+    color: black;
+    border-width: 1px
+}
+
+#start-filter-button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: white;
+    background-color: lightslategray;
+}
+
+

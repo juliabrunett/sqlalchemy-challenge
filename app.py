@@ -1,5 +1,5 @@
 # Import flask dependencies
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 
 # Import sqlalchemy & other dependencies
 import numpy as np
@@ -23,30 +23,7 @@ app = Flask(__name__)
 # Create a flask route for home
 @app.route("/")
 def home():
-    return (
-        "<title>Climate App</title>"
-
-        "<strong> <head>Welcome to the Climate App!</head> </strong> <br/> <br/>"
-
-        "<em> <strong>Available Routes:</em> </strong> <br/>"
-
-        "<ul> <li> <em>Find <strong> precipitation </strong> data for the last year: </em> <br/> </li>"
-        "/api/v1.0/precipitation <hr/>"
-
-        "<li> <em>Find <strong> station </strong> data: </em> <br/> </li>"
-        "/api/v1.0/stations <hr/>"
-
-        "<li> <em>Find <strong> temperature </strong> data for the last year at the most active station: </em> <br/> </li>"
-        "/api/v1.0/tobs <hr/>"
-
-        
-        "<li> <em>Enter your own <strong> Start Date </strong> to see temperature statistics: </em> <br/> </li>"
-        "/api/v1.0/2015-01-01 <hr/>"
-
-        "<li> <em>Enter your own <strong> Start Date </strong> and <strong> End Date </strong> to see temperature statistics: </em> <br/> </li>"
-        "/api/v1.0/2015-01-01/2016-01-01 <hr/> </ul>" 
-
-        "<p> <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Available Date Range: 2010-01-01 to 2017-08-23</strong> </p>")
+    return (render_template("index.html"))
 
 
 # Converts the query results from jupyter notebook exploration to a dictionary
@@ -58,7 +35,7 @@ def precipitation():
 
     # define selections
     sel = [Measurement.date,
-       func.sum(Measurement.prcp)]
+        func.sum(Measurement.prcp)]
 
     # Retrieve the last 12 months of precipitation data
     twelve_months = session.query(*sel).\
