@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
-        <!-- <link rel="stylesheet" type="text/css" href= "{{ url_for('static', filename='../static/style.css') }}"> -->
+        <link rel="stylesheet" type="text/css" href= "{{ url_for('static', filename='../static/style.css') }}">
         <!-- <link rel="stylesheet" type="JavaScript" href= "{{ url_for('static', filename='../static/js/app.js') }}"> -->
         <link rel="stylesheet" href= "../static/style.css">
     
@@ -51,7 +51,33 @@
             <a href="/api/v1.0/2015-01-01">/api/v1.0/2015-01-01</a> </p>
             <!-- Dropdown Menus -->
             <div class="row">
-                <div class="col-md-6" id="start-date-menu">
+                <div class="col-md-12" id="start-date-form-1">
+                    <!--Start Date Form-->
+                    <form id="form">
+                        <!--Form Group-->
+                        <div class="form-group">
+                            <!--List Group: Unordered-->
+                            <ul class="list-group" id="filters">
+                                <!--List-->
+                                <li class="filter list-group-item">
+                                    <!--Label for Form-->
+                                    <label for="start-date-1">Start Date:
+                                        <span id="start-date-selection-1"></span>
+                                    </label>
+                                    <!--Input: for date-->
+                                    <input class="form-control" id="startDatetime-1" type="text" placeholder="2010-01-01">
+                                    <!-- <div id="search-notes">
+                                        <p>Possible Date Range: </p>
+                                        <p>2010-01-01 to 2017-08-23</p>
+                                    </div> -->
+                                    <!--Button for submitting form-->
+                                <div class="text-center">
+                                    <button id="start-filter-button-1" type="button" class="btn btn-default">Search by Start Date</button>
+                                </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </form>
                     
                 </div>
             </div>
@@ -63,7 +89,7 @@
 
             <!-- Dropdown Menus -->
             <div class="row">
-                <div class="col-md-6" id="start-date-form">
+                <div class="col-md-6" id="start-date-form-2">
                     <!--Start Date Form-->
                     <form id="form">
                         <!--Form Group-->
@@ -73,19 +99,19 @@
                                 <!--List-->
                                 <li class="filter list-group-item">
                                     <!--Label for Form-->
-                                    <label for="start-date">Start Date:
-                                        <span id="start-date-selection"></span>
+                                    <label for="start-date-2">Start Date:
+                                        <span id="start-date-selection-2"></span>
                                     </label>
                                     <!--Input: for date-->
-                                    <input class="form-control" id="startDatetime" type="text" placeholder="2010-01-01">
+                                    <input class="form-control" id="startDatetime-2" type="text" placeholder="2010-01-01">
                                     <!-- <div id="search-notes">
                                         <p>Possible Date Range: </p>
                                         <p>2010-01-01 to 2017-08-23</p>
                                     </div> -->
                                     <!--Button for submitting form-->
-                                <div class="text-center">
-                                    <button id="start-filter-button" type="button" class="btn btn-default">Filter by Date</button>
-                                </div>
+                                <!-- <div class="text-center">
+                                    <button id="start-filter-button-2" type="button" class="btn btn-default">Filter by Date</button>
+                                </div> -->
                                 </li>
                             </ul>
                         </div>
@@ -112,9 +138,9 @@
                                         <p>2010-01-01 to 2017-08-23</p>
                                     </div> -->
                                     <!--Button for submitting form-->
-                                <div class="text-center">
+                                <!-- <div class="text-center">
                                     <button id="end-filter-button" type="button" class="btn btn-default">Filter by Date</button>
-                                </div>
+                                </div> -->
                                 </li>
                             </ul>
                         </div>
@@ -122,10 +148,13 @@
 
                 </div>
             </div>
+
             <div class="row">
-                <div class="col-md-12" id="endpoint-button">
-            <div class="text-center">
-                <!-- <button id="search-button" type="button" class="btn btn-default">Search</button> -->
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <button id="end-filter-button" type="button" class="btn btn-default">Search Date Range</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

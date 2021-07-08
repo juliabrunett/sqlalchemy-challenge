@@ -61,30 +61,32 @@ body {
     border-width: 1px;
 }
 
-#start-filter-button:hover {
+#start-filter-button-1:hover {
     background-color: lightgray;
     border-color: black;
     color: black;
     border-width: 1px
 }
 
-#start-filter-button {
+#start-filter-button-1 {
     margin-top: 20px;
     margin-bottom: 20px;
     color: white;
     background-color: lightslategray;
 }
 
-#search-button {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    color: white;
-    background-color: lightslategray;
-}
-
-#search-button:hover {
+#start-filter-button-2:hover {
     background-color: lightgray;
     border-color: black;
     color: black;
-    border-width: 1px;
+    border-width: 1px
 }
+
+#start-filter-button-2 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: white;
+    background-color: lightslategray;
+}
+
+
